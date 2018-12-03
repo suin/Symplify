@@ -98,6 +98,7 @@ parameters:
             - 'packages/CodingStandard/src/Sniffs/Naming/ClassNameSuffixByParentSniff.php'
             # class might not exist
             - '*packages/*/src/DependencyInjection/CompilerPass/*CompilerPass.php'
+            - 'packages/PHPStanExtensions/src/Rules/Methods/AbstractionOverImplementationRule.php'
 
         Symplify\CodingStandard\Sniffs\DependencyInjection\NoClassInstantiationSniff:
             # static helper
