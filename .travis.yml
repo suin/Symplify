@@ -30,7 +30,6 @@ before_script:
 
 script:
     - vendor/bin/phpunit
-    # disable xdebug
 
     - |
       if [[ $CODE_ANALYSIS == true ]]; then

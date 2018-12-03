@@ -129,6 +129,11 @@ parameters:
 
         # false positive
         - '#Call to an undefined method Psr\\Container\\ContainerInterface::set\(\)#'
+        - '#Cannot call method toString\(\) on PhpParser\\Node\\Identifier\|PhpParser\\Node\\Name\|PhpParser\\Node\\NullableType\|null#'
+        # overcomplicated
+        - '#Cannot cast PhpParser\\Node\\Expr\|string to string#'
+        - '#Call to an undefined method PhpParser\\Node\\Identifier\|PhpParser\\Node\\Name|PhpParser\\Node\\NullableType::toString\\()#'
+        - '#Method Symplify\\PHPStanExtensions\\Rules\\Methods\\AbstractionOverImplementationRule::selectPreferredInterface\(\) should return string but returns string\|null#'
 
 services:
     -

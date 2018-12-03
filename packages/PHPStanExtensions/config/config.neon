@@ -8,7 +8,13 @@ services:
     - Symfony\Component\Console\Terminal
     - Symplify\PHPStanExtensions\Error\ErrorGrouper
 
+    # rules
     -
         class: Symplify\PHPStanExtensions\Rules\Classes\MatchingTypeConstantRule
+        tags:
+            - phpstan.rules.rule
+
+    -
+        class: Symplify\PHPStanExtensions\Rules\Methods\AbstractionOverImplementationRule
         tags:
             - phpstan.rules.rule
