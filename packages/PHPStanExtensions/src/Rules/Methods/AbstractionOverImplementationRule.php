@@ -48,11 +48,12 @@ final class AbstractionOverImplementationRule implements Rule
 
             $typeName = $this->getParamType($param);
             $class = $this->broker->getClass($typeName);
-            if ($class->getInterfaces() === []) {
+            $preferredInterface = $this->selectPreferredInterface(array_keys($class->getInterfaces()));
+
+            if ($preferredInterface === null) {
                 continue;
             }
 
-            $preferredInterface = $this->selectPreferredInterface(array_keys($class->getInterfaces()));
             if ($param->var instanceof Error) {
                 continue;
             }
@@ -93,14 +94,25 @@ final class AbstractionOverImplementationRule implements Rule
     /**
      * @param string[] $interfaces
      */
-    private function selectPreferredInterface(array $interfaces): string
+    private function selectPreferredInterface(array $interfaces): ?string
     {
+        if ($interfaces === []) {
+            return null;
+        }
+
         foreach ($interfaces as $interface) {
             if (Strings::startsWith($interface, 'Psr\\')) {
                 return $interface;
             }
         }
 
-        return array_pop($interfaces);
+        $interface = array_pop($interfaces);
+
+        // excluded interfaces
+        if (in_array($interface, ['Iterator', 'PHPStan\PhpDocParser\Ast\Node'], true)) {
+            return null;
+        }
+
+        return $interface;
     }
 }
