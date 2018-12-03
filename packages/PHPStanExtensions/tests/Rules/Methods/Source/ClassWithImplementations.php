@@ -2,6 +2,7 @@
 
 namespace Symplify\PHPStanExtensions\Tests\Rules\Methods\Source;
 
+use GuzzleHttp\Psr7\Request;
 use Symfony\Component\DependencyInjection\Container;
 
 final class ClassWithImplementations
@@ -11,9 +12,20 @@ final class ClassWithImplementations
      */
     private $container;
 
-    public function __construct(Container $container)
+    /**
+     * @var Request|null
+     */
+    private $request;
+
+    public function __construct(Container $container, ?Request $request)
     {
         $this->container = $container;
+        $this->request = $request;
+    }
+
+    public function getRequest(): ?Request
+    {
+        return $this->request;
     }
 
     public function getContainer(): Container

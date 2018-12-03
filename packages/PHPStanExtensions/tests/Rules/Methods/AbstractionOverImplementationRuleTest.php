@@ -15,7 +15,11 @@ final class AbstractionOverImplementationRuleTest extends RuleTestCase
             [
                 [
                     'You should use interface "Psr\Container\ContainerInterface" instead of "Symfony\Component\DependencyInjection\Container" class as a typehint for "$container" argument',
-                    14,
+                    20,
+                ],
+                [
+                    'You should use interface "Psr\Http\Message\RequestInterface" instead of "GuzzleHttp\Psr7\Request" class as a typehint for "$request" argument',
+                    20,
                 ],
             ]
         );

@@ -5,6 +5,7 @@ namespace Symplify\PHPStanExtensions\Rules\Methods;
 use Nette\Utils\Strings;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Error;
+use PhpParser\Node\NullableType;
 use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Analyser\Scope;
@@ -45,14 +46,13 @@ final class AbstractionOverImplementationRule implements Rule
                 continue;
             }
 
-            $typeName = $param->type->toString();
+            $typeName = $this->getParamType($param);
             $class = $this->broker->getClass($typeName);
             if ($class->getInterfaces() === []) {
                 continue;
             }
 
             $preferredInterface = $this->selectPreferredInterface(array_keys($class->getInterfaces()));
-
             if ($param->var instanceof Error) {
                 continue;
             }
@@ -76,9 +76,18 @@ final class AbstractionOverImplementationRule implements Rule
             return true;
         }
 
-        $typeName = $paramNode->type->toString();
+        $typeName = $this->getParamType($paramNode);
 
         return $this->broker->hasClass($typeName) === false;
+    }
+
+    private function getParamType(Param $paramNode): string
+    {
+        if ($paramNode->type instanceof NullableType) {
+            return (string) $paramNode->type->type;
+        }
+
+        return (string) $paramNode->type;
     }
 
     /**
