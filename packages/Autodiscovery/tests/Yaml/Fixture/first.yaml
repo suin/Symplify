@@ -1,0 +1,7 @@
+services:
+    App\SomeClass: ~
+    App\AnotherClass: ~
+---
+services:
+    App\:
+        resource: "../src"
