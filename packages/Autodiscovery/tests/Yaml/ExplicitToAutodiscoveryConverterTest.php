@@ -7,6 +7,7 @@ use Nette\Utils\Strings;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 use Symfony\Component\Yaml\Yaml;
+use Symplify\Autodiscovery\Yaml\CommonNamespaceResolver;
 use Symplify\Autodiscovery\Yaml\ExplicitToAutodiscoveryConverter;
 
 final class ExplicitToAutodiscoveryConverterTest extends TestCase
@@ -23,7 +24,10 @@ final class ExplicitToAutodiscoveryConverterTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->explicitToAutodiscoveryConverter = new ExplicitToAutodiscoveryConverter(new SymfonyFilesystem());
+        $this->explicitToAutodiscoveryConverter = new ExplicitToAutodiscoveryConverter(
+            new SymfonyFilesystem(),
+            new CommonNamespaceResolver()
+        );
     }
 
     public function test(): void

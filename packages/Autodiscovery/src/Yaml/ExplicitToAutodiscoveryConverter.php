@@ -13,9 +13,15 @@ final class ExplicitToAutodiscoveryConverter
      */
     private $filesystem;
 
-    public function __construct(Filesystem $filesystem)
+    /**
+     * @var CommonNamespaceResolver
+     */
+    private $commonNamespaceResolver;
+
+    public function __construct(Filesystem $filesystem, CommonNamespaceResolver $commonNamespaceResolver)
     {
         $this->filesystem = $filesystem;
+        $this->commonNamespaceResolver = $commonNamespaceResolver;
     }
 
     /**
