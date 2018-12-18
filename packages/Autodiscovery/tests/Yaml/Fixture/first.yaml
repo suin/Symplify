@@ -1,7 +1,8 @@
 services:
-    App\SomeClass: ~
-    App\AnotherClass: ~
+    Symplify\Autodiscovery\Tests\Yaml\Source\AnotherClass: ~
+    Symplify\Autodiscovery\Tests\Yaml\Source\SomeClass: ~
+
 ---
 services:
-    App\:
-        resource: "../src"
+    Symplify\Autodiscovery\Tests\Yaml\Source\:
+        resource: "../Source"

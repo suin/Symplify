@@ -3,14 +3,26 @@
 namespace Symplify\Autodiscovery\Yaml;
 
 use Nette\Utils\Strings;
+use ReflectionClass;
+use Symfony\Component\Filesystem\Filesystem;
 
 final class ExplicitToAutodiscoveryConverter
 {
     /**
+     * @var Filesystem
+     */
+    private $filesystem;
+
+    public function __construct(Filesystem $filesystem)
+    {
+        $this->filesystem = $filesystem;
+    }
+
+    /**
      * @param mixed[] $yaml
      * @return mixed[]
      */
-    public function convert(array $yaml): array
+    public function convert(array $yaml, string $filePath): array
     {
         // nothing to change
         if (! isset($yaml['services'])) {
@@ -28,20 +40,31 @@ final class ExplicitToAutodiscoveryConverter
         }
 
         // determine longest common namespace
-        $namespaces = [];
+        $servicesByNamespace = [];
         foreach ($services as $service) {
-            $namespaces[] = Strings::before($service, '\\', -1);
+            // @todo better solve
+            $namespace = Strings::before($service, '\\', -1);
+            $servicesByNamespace[$namespace][] = $service;
         }
 
-        $uniqueNamespaces = array_unique($namespaces);
-
-        // 1 namespace
-        if (count($uniqueNamespaces) === 1) {
-            $yaml['services'][$uniqueNamespaces[0] . '\\'] = [
-                'resource' => '../src', # assumption
+        foreach ($servicesByNamespace as $namespace => $services) {
+            $yaml['services'][$namespace . '\\'] = [
+                'resource' => $this->getRelativeClassLocation($services[0], $filePath),
             ];
         }
 
         return $yaml;
+    }
+
+    private function getRelativeClassLocation(string $class, string $configFilePath): string
+    {
+        $reflectionClass = new ReflectionClass($class);
+
+        $classDirectory = dirname($reflectionClass->getFileName());
+        $configDirectory = dirname($configFilePath);
+
+        $relativePath = $this->filesystem->makePathRelative($classDirectory, $configDirectory);
+
+        return rtrim($relativePath, '/');
     }
 }
