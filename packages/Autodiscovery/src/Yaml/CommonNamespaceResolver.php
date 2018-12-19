@@ -12,6 +12,7 @@ final class CommonNamespaceResolver
     public function resolve(array $classes): ?string
     {
         $namespace = null;
+        $previousNamespace = null;
 
         $namespaceNestingLevel = substr_count($classes[0], '\\');
         for ($i = 1; $i <= $namespaceNestingLevel; ++$i) {
@@ -20,12 +21,14 @@ final class CommonNamespaceResolver
 
                 foreach ($classes as $classAgain) {
                     if (! Strings::startsWith($classAgain, $namespace . '\\')) {
-                        return $namespace;
+                        return $previousNamespace;
                     }
                 }
+
+                $previousNamespace = $namespace;
             }
         }
 
-        return $namespace;
+        return $previousNamespace;
     }
 }

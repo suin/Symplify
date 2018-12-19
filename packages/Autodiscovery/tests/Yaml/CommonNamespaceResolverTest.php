@@ -31,5 +31,13 @@ final class CommonNamespaceResolverTest extends TestCase
     {
         yield [['App\FirstClass', 'App\AnotherClass'], 'App'];
         yield [['App\Wohoo\FirstClass', 'App\Wohoo\AnotherClass'], 'App\Wohoo'];
+        yield [
+            [
+                'Shopsys\FrameworkBundle\Model\Payment\PaymentRepository',
+                'Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade',
+                'Shopsys\FrameworkBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig',
+            ],
+            'Shopsys\FrameworkBundle',
+        ];
     }
 }
